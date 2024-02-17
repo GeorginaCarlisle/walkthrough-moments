@@ -1,16 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import logo from '../assets/logo.png';
 import styles from '../styles/NavBar.module.css';
 import { NavLink } from "react-router-dom";
-import { CurrentUserContext } from '../App';
+import { useCurrentUser } from '../contexts/CurrentUserContext';
 
 const NavBar = () => {
 
   // Get currentUser data from the global context
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
 
   // Set NavBar element to be displayed if user logged IN
   const loggedInIcons = <>{currentUser?.username}</>
