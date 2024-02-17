@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 import { useCurrentUser, useSetCurrentUSer } from '../contexts/CurrentUserContext';
 import Avatar from './Avatar';
 import axios from 'axios';
+import useClickOutsideToggle from '../hooks/useClickOutsideToggle';
 
 const NavBar = () => {
 
@@ -17,31 +18,8 @@ const NavBar = () => {
   // Get setCurrentUser function from the global context
   const setCurrentUser = useSetCurrentUSer();
 
-  // false when mobile nav collapsed and true when it has been expanded
-  const [expanded, setExpanded] = useState(false);
-
-  // This will hold a reference to the toggle element once screen size drops
-  const ref = useRef(null)
-
-  /**
-   *  Adds an event listener for mouse up on changes/rendering of the toggle element (identified through the use of ref which is only triggered for smaller screens).
-   *  Handling of event listener checks if it is outside of the toggle element and if so changes expanded to false, which collapses the menu.
-   *  Note: clicks on toggle are already programmed to collapse menu.
-   *  A cleanup function removes the eventlistener when
-   */ 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      console.log("HandleClickOutsideCalled");
-      if (ref.current && !ref.current.contains(event.target)){
-        setExpanded(false)
-      }
-    }
-
-    document.addEventListener('mouseup', handleClickOutside);
-    return () => {
-      document.removeEventListener('mouseup', handleClickOutside);
-    }
-  }, [ref]);
+  // Pull variables from custom hook
+  const {expanded, setExpanded, ref} = useClickOutsideToggle();
 
   // Logic for display added within return statement
   const addPostIcon = (
