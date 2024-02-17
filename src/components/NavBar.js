@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
@@ -16,6 +16,32 @@ const NavBar = () => {
 
   // Get setCurrentUser function from the global context
   const setCurrentUser = useSetCurrentUSer();
+
+  // false when mobile nav collapsed and true when it has been expanded
+  const [expanded, setExpanded] = useState(false);
+
+  // This will hold a reference to the toggle element once screen size drops
+  const ref = useRef(null)
+
+  /**
+   *  Adds an event listener for mouse up on changes/rendering of the toggle element (identified through the use of ref which is only triggered for smaller screens).
+   *  Handling of event listener checks if it is outside of the toggle element and if so changes expanded to false, which collapses the menu.
+   *  Note: clicks on toggle are already programmed to collapse menu.
+   *  A cleanup function removes the eventlistener when
+   */ 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      console.log("HandleClickOutsideCalled");
+      if (ref.current && !ref.current.contains(event.target)){
+        setExpanded(false)
+      }
+    }
+
+    document.addEventListener('mouseup', handleClickOutside);
+    return () => {
+      document.removeEventListener('mouseup', handleClickOutside);
+    }
+  }, [ref]);
 
   // Logic for display added within return statement
   const addPostIcon = (
@@ -75,7 +101,7 @@ const NavBar = () => {
   )
 
   return (
-    <Navbar expand="md" fixed="top" className={styles.NavBar}>
+    <Navbar expanded={expanded} expand="md" fixed="top" className={styles.NavBar}>
       <Container>
         <NavLink to="/">
           <Navbar.Brand>
@@ -83,7 +109,11 @@ const NavBar = () => {
           </Navbar.Brand>
         </NavLink>
         {currentUser && addPostIcon}
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle
+          ref={ref}
+          onClick={() => setExpanded(!expanded)}
+          aria-controls="basic-navbar-nav"
+        />
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto text-left">
               <NavLink exact className={styles.NavLink} activeClassName={styles.Active} to="/">
