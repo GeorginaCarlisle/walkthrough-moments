@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
@@ -15,8 +15,11 @@ import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
 
 import axios from "axios";
+import { SetCurrentUserContext } from "../../App";
 
 function SignInForm() {
+    // Below pulls the setCurrentUser function from the global context ready to be used.
+    const setCurrentUser = useContext(SetCurrentUserContext);
 
     const [signInData, setSignInData] = useState({
         username: '',
@@ -35,10 +38,12 @@ function SignInForm() {
         });
     };
 
+    // posts form data to login end point to verify user and saves returned data.user to currentUser
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await axios.post('/dj-rest-auth/login/', signInData);
+            const {data} = await axios.post('/dj-rest-auth/login/', signInData);
+            setCurrentUser(data.user);
             history.push('/');
         } catch(err){
             setErrors(err.response?.data);

@@ -5,21 +5,51 @@ import {Route,Switch} from 'react-router-dom';
 import './api/axiosDefaults';
 import SignUpForm from './pages/auth/SignUpForm';
 import SignInForm from './pages/auth/SignInForm';
+import { createContext, useEffect, useState } from 'react';
+import axios from "axios";
 
+// Below adds the currentUserContext (currentUser passed in as part of the return statement) to the global context (which can then be accessed by all children of app.js).
+export const CurrentUserContext = createContext();
+// Below adds the setCurrentUserContext (setCurrentUser function passed in as part of the return statement) to the global context.
+export const SetCurrentUserContext = createContext();
 
 function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  // below response from get request destructured to pull data (and data only) from the reponse
+  const handleMount = async () => {
+    try {
+      const {data} = await axios.get('dj-rest-auth/user/');
+      setCurrentUser(data);
+      console.log("Current user is:")
+      console.log(currentUser);
+    } catch(err) {
+      console.log("Error in getting current user. Error details are:")
+      console.log(err);
+    }
+  };
+
+  // 
+  useEffect(() => {
+    handleMount()
+  }, []);
+
   return (
-    <div className={styles.App}>
-      < NavBar />
-      <Container className={styles.Main}>
-        <Switch>
-          <Route exact path="/" render={() => <h1>Home page</h1>} />
-          <Route exact path="/signin" render={() => <SignInForm />} />
-          <Route exact path="/signup" render={() => <SignUpForm />} />
-          <Route render={() => <h1>Page not found!</h1>} />
-        </Switch>
-      </Container>
-    </div>
+    <CurrentUserContext.Provider value={currentUser}>
+      <SetCurrentUserContext.Provider value={setCurrentUser}>
+        <div className={styles.App}>
+          < NavBar />
+          <Container className={styles.Main}>
+            <Switch>
+              <Route exact path="/" render={() => <h1>Home page</h1>} />
+              <Route exact path="/signin" render={() => <SignInForm />} />
+              <Route exact path="/signup" render={() => <SignUpForm />} />
+              <Route render={() => <h1>Page not found!</h1>} />
+            </Switch>
+          </Container>
+        </div>
+      </SetCurrentUserContext.Provider>
+    </CurrentUserContext.Provider>
   );
 }
 
