@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import axios from "axios";
 import { axiosReq, axiosRes } from '../api/axiosDefaults';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory } from 'react-router';
 
 // Below adds the currentUserContext (currentUser passed in as part of the return statement) to the global context (which can then be accessed by all children of app.js).
 export const CurrentUserContext = createContext();
@@ -9,13 +9,13 @@ export const CurrentUserContext = createContext();
 export const SetCurrentUserContext = createContext();
 
 // Below functions are then pulled into components where these functionalities are required.
-export const useCurrentUser = () => useContext(CurrentUserContext)
-export const useSetCurrentUSer = () => useContext(SetCurrentUserContext)
+export const useCurrentUser = () => useContext(CurrentUserContext);
+export const useSetCurrentUSer = () => useContext(SetCurrentUserContext);
 
 // This function is then pulled into index.js and used to wrap the App component
 export const CurrentUserProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
-    const history = useHistory;
+    const history = useHistory();
 
   // below response from get request destructured to pull data (and data only) from the reponse
   const handleMount = async () => {
