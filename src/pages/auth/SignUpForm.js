@@ -7,8 +7,10 @@ import appStyles from "../../App.module.css";
 
 import { Form, Button, Image, Col, Row, Container, Alert, } from "react-bootstrap";
 import axios from "axios";
+import { useRedirect } from "../../hooks/useRedirect";
 
 const SignUpForm = () => {
+  useRedirect('loggedIn');
   // Below sets an object (signUpData) within the state, providing initial values and method by which it can be updated (setSignUpData)
   const [signUpData, setSignUpData] = useState({
     username: '',
