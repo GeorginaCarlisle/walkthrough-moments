@@ -1,6 +1,6 @@
-import { rest } from "msw"
+import { rest } from "msw";
 
-const baseURL = 'https://walk-through-django-rest-a5d1529cfa3a.herokuapp.com/'
+const baseURL = 'https://walk-through-django-rest-a5d1529cfa3a.herokuapp.com/';
 
 export const handlers = [
     rest.get(`${baseURL}dj-rest-auth/user/`, (req, res, ctx) => {
@@ -18,5 +18,5 @@ export const handlers = [
     }),
     rest.post(`${baseURL}dj-rest-auth/logout/`, (req, res, ctx) => {
         return res(ctx.status(200));
-    })
+    }),
 ];
