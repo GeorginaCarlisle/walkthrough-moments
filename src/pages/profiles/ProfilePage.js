@@ -9,13 +9,14 @@ import Asset from "../../components/Asset";
 import styles from "../../styles/ProfilePage.module.css";
 import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
+import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
 
 import PopularProfiles from "./PopularProfiles";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { useParams } from "react-router";
 import { axiosReq } from "../../api/axiosDefaults";
 import { useProfileData, useSetProfileData } from "../../contexts/ProfileDataContext";
-import { Button, Image } from "react-bootstrap";
 import Post from "../posts/Post";
 import { fetchMoreData } from "../../utils/utils";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -42,8 +43,6 @@ function ProfilePage() {
           axiosReq.get(`/profiles/${id}/`),
           axiosReq.get(`/posts/?owner__profile=${id}`),
         ]);
-        console.log(pageProfile);
-        console.log(profilePosts);
         setProfileData((prevState) => ({
           ...prevState,
           pageProfile: {results: [pageProfile]},
@@ -51,7 +50,7 @@ function ProfilePage() {
         setProfilePosts(profilePosts);
         setHasLoaded(true);
       } catch(err){
-        console.log(err);
+        //console.log(err);
       }
     };
     fetchData();

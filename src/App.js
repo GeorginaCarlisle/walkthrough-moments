@@ -15,14 +15,11 @@ import ProfilePage from './pages/profiles/ProfilePage';
 import UsernameForm from "./pages/profiles/UsernameForm";
 import UserPasswordForm from "./pages/profiles/UserPasswordForm";
 import ProfileEditForm from "./pages/profiles/ProfileEditForm";
+import NotFound from './components/NotFound';
 
 function App() {
   const currentUser = useCurrentUser();
-  console.log("Current user has been identified...");
-  console.log(currentUser);
   const profile_id = currentUser?.profile_id || "";
-  console.log("Profile Id has been found....");
-  console.log(profile_id);
   
   return (
     <div className={styles.App}>
@@ -54,7 +51,7 @@ function App() {
           <Route exact path="/profiles/:id/edit/username" render={() => <UsernameForm />} />
           <Route exact path="/profiles/:id/edit/password" render={() => <UserPasswordForm />} />
           <Route exact path="/profiles/:id/edit" render={() => <ProfileEditForm />} />
-          <Route render={() => <h1>Page not found!</h1>} />
+          <Route render={() => <NotFound />} />
         </Switch>
       </Container>
     </div>

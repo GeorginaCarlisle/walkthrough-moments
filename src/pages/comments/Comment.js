@@ -26,8 +26,6 @@ const Comment = (props) => {
   const [showEditForm, setShowEditForm] = useState(false);
 
   const handleDelete = async () => {
-    console.log(id);  
-    console.log(profile_id);
     try {
       await axiosRes.delete(`/comments/${id}`);
       setPost(prevPost => ({
@@ -41,7 +39,7 @@ const Comment = (props) => {
         results: prevComments.results.filter((comment) => comment.id !== id)
       }));
     } catch(err){
-      console.log(err);
+      //console.log(err);
     }
   };
 

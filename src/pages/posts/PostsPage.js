@@ -27,13 +27,11 @@ function PostsPage({ message, filter = "" }) {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        console.log(filter);
         const {data} = await axiosReq.get(`/posts/?${filter}search=${query}`);
-        console.log(data);
         setPosts(data);
         setHasLoaded(true);
       } catch(err){
-        console.log(err);
+        //console.log(err);
       }
     };
     setHasLoaded(false);
